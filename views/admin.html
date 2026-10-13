@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel da Palestra | IFSP CyberSec</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Segoe UI", Roboto, Arial, sans-serif; background: #0f1419; color: #e6e6e6; padding: 20px; }
+    .top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+    .top h1 { font-size: 22px; color: #4ade80; }
+    .count { background: #1e2a22; color: #4ade80; padding: 6px 16px; font-weight: 700; font-size: 18px; }
+    .btns { margin-left: auto; display: flex; gap: 10px; }
+    button { font-family: inherit; font-size: 14px; font-weight: 600; padding: 9px 18px; border: none; cursor: pointer; }
+    .btn-refresh { background: #2563eb; color: #fff; }
+    .btn-wipe { background: #dc2626; color: #fff; }
+    .auto { font-size: 13px; color: #888; display: flex; align-items: center; gap: 6px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
+    .p-card { background: #161c24; border: 1px solid #2a333f; overflow: hidden; }
+    .p-head { background: #1b2530; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+    .p-head .avatar { width: 40px; height: 40px; background: #334; object-fit: cover; }
+    .p-head .nome { font-weight: 700; font-size: 16px; }
+    .p-head .quando { font-size: 12px; color: #889; }
+    .p-head .pid { margin-left: auto; font-size: 12px; color: #667; }
+
+    .sec { padding: 10px 16px; border-top: 1px solid #222c38; }
+    .sec h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: #7dd3fc; margin-bottom: 8px; }
+    .sec.auto-sec h3 { color: #f87171; }
+    .row { display: flex; font-size: 13px; padding: 2px 0; gap: 8px; }
+    .row .k { color: #8a94a3; min-width: 120px; flex-shrink: 0; }
+    .row .v { color: #e6e6e6; word-break: break-word; }
+    .fp { font-family: monospace; background: #1e2a22; color: #4ade80; padding: 2px 6px; }
+    .badge-google { background: #1a2e1a; color: #4ade80; font-size: 11px; padding: 2px 8px; }
+    .empty { text-align: center; color: #667; padding: 60px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <h1>Painel da Palestra - Dados Coletados</h1>
+    <span class="count" id="count">0</span>
+    <div class="btns">
+      <label class="auto"><input type="checkbox" id="autoRefresh" checked> atualizar automatico</label>
+      <button class="btn-refresh" onclick="carregar()">Atualizar</button>
+      <button class="btn-wipe" onclick="apagarTudo()">Apagar tudo (ao vivo)</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none">Nenhum dado. (Banco vazio)</div>
+
+  <script>
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    }
+    function fmtData(iso) {
+      try { return new Date(iso).toLocaleString('pt-BR'); } catch { return iso; }
+    }
+    function mascEmail(e) {
+      if (!e) return '';
+      const s = String(e);
+      const at = s.indexOf('@');
+      if (at < 1) return esc(s);
+      const user = s.slice(0, at);
+      const dominio = s.slice(at + 1);
+      const vis = user.slice(0, Math.min(2, user.length));
+      return esc(vis + '***@' + dominio);
+    }
+    function mascTelefone(t) {
+      if (!t) return '';
+      const n = String(t).replace(/\D/g, '');
+      if (n.length < 10) return esc(t);
+      const ddd = n.slice(0, 2);
+      const corpo = n.slice(2);
+      const fmt = corpo.length >= 9
+        ? corpo.slice(0, 5) + '-****'
+        : corpo.slice(0, 4) + '-****';
+      return '(' + ddd + ') ' + fmt;
+    }
+    function row(k, v) {
+      if (v === undefined || v === null || v === '') return '';
+      return '<div class="row"><span class="k">' + k + '</span><span class="v">' + v + '</span></div>';
+    }
+
+    function render(participantes) {
+      const grid = document.getElementById('grid');
+      const empty = document.getElementById('empty');
+      document.getElementById('count').textContent = participantes.length;
+      if (!participantes.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+      empty.style.display = 'none';
+
+      grid.innerHTML = participantes.map(p => {
+        const g = p.google || {};
+        const foto = (g.photos && g.photos[0] && g.photos[0].value) || '';
+        const d = p.device || {};
+        const geo = p.geo || {};
+        const b = p.behavior || {};
+        const conn = d.conexao || {};
+        const gpu = d.gpu || {};
+
+        return `
+        <div class="p-card">
+          <div class="p-head">
+            ${foto ? `<img class="avatar" src="${esc(foto)}">` : `<div class="avatar"></div>`}
+            <div>
+              <div class="nome">${esc(p.nome) || '(sem nome)'} ${g.id ? '<span class="badge-google">Google</span>' : ''}</div>
+              <div class="quando">${fmtData(p.created_at)}</div>
+            </div>
+            <div class="pid">#${p.id}</div>
+          </div>
+
+          <div class="sec">
+            <h3>Formulario (o que digitou)</h3>
+            ${row('E-mail', mascEmail(p.email))}
+            ${row('Telefone', mascTelefone(p.telefone))}
+            ${row('Nascimento', esc(p.nascimento))}
+            ${row('Instagram', esc(p.instagram))}
+            ${row('Cidade', esc(p.cidade))}
+          </div>
+
+          ${g.id ? `
+          <div class="sec">
+            <h3>Conta Google (1 clique)</h3>
+            ${row('Nome', esc(g.displayName))}
+            ${row('E-mail Google', mascEmail((g.emails && g.emails[0] && g.emails[0].value) || ''))}
+            ${row('ID Google', esc(g.id))}
+          </div>` : ''}
+
+          <div class="sec auto-sec">
+            <h3>Coletado sem permissao (so abrir o link)</h3>
+            ${row('IP', esc(p.ip))}
+            ${row('Local (por IP)', esc([geo.city, geo.regionName, geo.country].filter(Boolean).join(', '))) }
+            ${row('Provedor', esc(geo.isp))}
+            ${row('Rede movel?', geo.mobile === undefined ? '' : (geo.mobile ? 'sim' : 'nao'))}
+            ${row('Fingerprint', d.fingerprint ? '<span class="fp">' + esc(d.fingerprint) + '</span>' : '')}
+            ${row('Sistema', esc(d.plataforma))}
+            ${row('Navegador', esc(d.userAgent))}
+            ${row('Tela', d.tela ? esc(d.tela.largura + 'x' + d.tela.altura + ' @' + d.tela.pixelRatio + 'x') : '')}
+            ${row('Fuso horario', esc(d.fusoHorario))}
+            ${row('Idiomas', esc((d.idiomas || []).join(', ')))}
+            ${row('CPU / RAM', esc([d.nucleosCPU ? d.nucleosCPU + ' nucleos' : '', d.memoriaGB ? d.memoriaGB + ' GB' : ''].filter(Boolean).join(' / ')))}
+            ${row('GPU', esc(gpu.modelo))}
+            ${row('Conexao', conn.tipo ? esc(conn.tipo + (conn.downlinkMbps ? ' ~' + conn.downlinkMbps + 'Mbps' : '')) : '')}
+            ${row('Bateria', d.bateria ? esc(d.bateria.nivelPct + '%' + (d.bateria.carregando ? ' (carregando)' : '')) : '')}
+            ${row('Touch', d.touch === undefined ? '' : (d.touch ? 'sim (celular/tablet)' : 'nao'))}
+          </div>
+
+          <div class="sec">
+            <h3>Comportamento</h3>
+            ${row('Tempo na pagina', b.tempoNaPaginaMs ? (Math.round(b.tempoNaPaginaMs/1000) + 's') : '')}
+            ${row('Scroll maximo', b.maxScrollPct !== undefined ? b.maxScrollPct + '%' : '')}
+            ${row('Cliques', b.cliques)}
+            ${row('Leu o termo?', b.abriuTermo ? ('abriu ' + Math.round((b.leuTermoMs||0)/1000) + 's') : 'NAO abriu')}
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    async function carregar() {
+      try {
+        const r = await fetch('/admin/data');
+        const data = await r.json();
+        render(data.participantes || []);
+      } catch (e) {}
+    }
+
+    async function apagarTudo() {
+      if (!confirm('APAGAR TODOS os dados coletados? Isto e irreversivel.')) return;
+      await fetch('/admin/wipe', { method: 'POST' });
+      carregar();
+    }
+
+    let timer = setInterval(() => { if (document.getElementById('autoRefresh').checked) carregar(); }, 3000);
+    carregar();
+  </script>
+</body>
+</html>
