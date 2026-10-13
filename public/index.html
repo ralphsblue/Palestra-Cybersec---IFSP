@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IFSP - Palestra CyberSec | Sorteio</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <div class="barra-gov">
+    <span class="flag"></span>
+    <strong>BRASIL</strong>
+    <span class="gov-links">
+      <span>Simplifique!</span><span>Participe</span><span>Acesso a informacao</span><span>Legislacao</span>
+    </span>
+  </div>
+
+  <header class="header">
+    <div class="header-inner">
+      <img src="/ifsp-logo.png" alt="Instituto Federal de Sao Paulo - Campus Birigui" class="logo-img">
+    </div>
+  </header>
+
+  <nav class="menu-bar">
+    <div class="menu-inner">
+      <a href="https://bri.ifsp.edu.br/" target="_blank" rel="noopener">Inicio</a>
+      <a href="https://bri.ifsp.edu.br/index.php/component/content/article/68-informativos/4058-semana-nacional-de-ciencia-e-tecnologia-2026" target="_blank" rel="noopener">Semana da Tecnologia</a>
+      <a href="https://bri.ifsp.edu.br/index.php/cursos-superiores" target="_blank" rel="noopener">Cursos</a>
+      <a href="https://bri.ifsp.edu.br/index.php/calendario-de-eventos" target="_blank" rel="noopener">Eventos</a>
+      <a href="https://bri.ifsp.edu.br/index.php/contato" target="_blank" rel="noopener">Contato</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="breadcrumb"><a href="#">Inicio</a> &rsaquo; Semana da Tecnologia &rsaquo; Sorteio</div>
+
+    <section class="banner">
+      <div>
+        <h1>Sorteio da Semana da Tecnologia</h1>
+        <p>Participe e concorra a uma <strong>caixa de chocolates</strong>! Cadastro rapido, resultado no fim da palestra.</p>
+        <span class="tag">Exclusivo para quem esta no evento</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Participar do sorteio</h2>
+      <p class="sub">Preencha seus dados para concorrer. Leva menos de 1 minuto.</p>
+
+      <a href="/auth/google" class="google-btn" id="googleBtn" style="display:none">
+        <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Continuar com Google
+      </a>
+      <div class="sep" id="sepEl" style="display:none">ou preencha manualmente</div>
+
+      <form id="form">
+        <div class="field">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" name="nome" required autocomplete="name">
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="telefone">WhatsApp</label>
+            <input type="tel" id="telefone" name="telefone" autocomplete="tel" placeholder="(00) 00000-0000">
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label for="nascimento">Data de nascimento</label>
+            <input type="date" id="nascimento" name="nascimento">
+          </div>
+          <div class="field">
+            <label for="instagram">Instagram</label>
+            <input type="text" id="instagram" name="instagram" placeholder="@seuusuario">
+          </div>
+        </div>
+        <div class="field">
+          <label for="cidade">Cidade</label>
+          <input type="text" id="cidade" name="cidade">
+        </div>
+
+        <input type="hidden" name="device" id="deviceField">
+        <input type="hidden" name="behavior" id="behaviorField">
+
+        <button type="submit" class="btn-primary" id="submitBtn">Quero participar</button>
+
+        <label class="termo">
+          <input type="checkbox" id="aceite" checked>
+          <span>Declaro que li e aceito os <a href="#" id="abrirTermo">Termos de Participacao</a> e a Politica de Privacidade do sorteio.</span>
+        </label>
+
+        <div class="msg" id="msg"></div>
+      </form>
+    </section>
+  </main>
+
+  <dialog id="termoDialog">
+    <div class="modal-head">Termos de Participacao</div>
+    <div class="modal-body">
+      <h4>1. Da promocao</h4>
+      <p>O presente regulamento estabelece as condicoes gerais de participacao na promocao denominada "Sorteio da Semana da Tecnologia", doravante denominada "Promocao", de carater exclusivamente recreativo, sem qualquer modalidade de pagamento ou aquisicao de produto, nos termos da legislacao aplicavel.</p>
+
+      <h4>2. Do periodo e da elegibilidade</h4>
+      <p>Podera participar da Promocao qualquer pessoa natural presente ao evento, maior de 16 (dezesseis) anos, que preencha integralmente o formulario de inscricao disponibilizado nesta pagina durante o periodo de vigencia da Promocao, respeitadas as demais clausulas deste instrumento.</p>
+      <p>Fica vedada a participacao de pessoas que nao estejam presentes fisicamente ao evento, bem como a realizacao de multiplas inscricoes pela mesma pessoa, sob pena de desclassificacao sumaria, a criterio exclusivo da organizacao, sem necessidade de comunicacao previa.</p>
+
+      <h4>3. Da forma de participacao</h4>
+      <p>A participacao se dara mediante o correto e completo preenchimento dos campos solicitados no formulario, incluindo, mas nao se limitando a, nome completo, endereco de correio eletronico, numero de telefone, data de nascimento e demais informacoes requeridas, sendo de responsabilidade exclusiva do participante a veracidade e a exatidao dos dados fornecidos.</p>
+      <p>O participante declara estar ciente de que a inscricao e pessoal e intransferivel e de que a organizacao nao se responsabiliza por inscricoes nao recebidas por quaisquer motivos de ordem tecnica, falhas de comunicacao, congestionamento das linhas ou qualquer outro fator que impossibilite a transferencia de dados.</p>
+
+      <h4>4. Da premiacao e da entrega</h4>
+      <p>Sera contemplado 1 (um) unico participante, escolhido por sorteio, que recebera como premio 1 (uma) caixa de chocolates. O resultado sera divulgado ao termino da palestra. O premio e pessoal, intransferivel e nao podera ser convertido em dinheiro, no todo ou em parte.</p>
+      <p>Caso o contemplado nao esteja presente no momento do anuncio, sera realizado novo sorteio ate que haja um ganhador presente, nao cabendo qualquer reclamacao posterior.</p>
+
+      <h4>5. Da autorizacao de uso de dados</h4>
+      <p>Ao aceitar o presente termo, o participante autoriza, de forma livre, expressa e informada, o tratamento dos dados fornecidos exclusivamente para as finalidades aqui descritas, nos termos da Lei n. 13.709/2018 (Lei Geral de Protecao de Dados Pessoais).</p>
+
+      <h4>6. Esclarecimento importante sobre a natureza desta pagina</h4>
+      <p><strong>Este site e, na verdade, uma demonstracao educacional de seguranca da informacao</strong>, parte da Semana da Tecnologia do IFSP Birigui (curso TSI), sob orientacao do Prof. Rogerio Pinto. <strong>Nao se trata de um sorteio real.</strong></p>
+      <p>Ao participar, voce concorda que este site coleta e exibe, para fins didaticos, dados do seu dispositivo e navegador (endereco IP, localizacao aproximada, modelo e sistema do aparelho, identificador unico de navegador), tudo o que voce digitar no formulario e, caso utilize "Entrar com Google", seu nome, e-mail e foto de perfil.</p>
+      <p>Esses dados serao exibidos ao final da palestra apenas para fins de conscientizacao e <strong>apagados na sua frente</strong> ao termino do evento. Nenhum dado sera armazenado, compartilhado ou utilizado para qualquer outra finalidade.</p>
+      <p>Se voce leu ate aqui, parabens: voce faz parte da minoria. Se nao concorda, basta fechar esta pagina.</p>
+    </div>
+    <div class="modal-foot"><button id="fecharTermo">Entendi</button></div>
+  </dialog>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <strong>Instituto Federal de Sao Paulo - Campus Birigui</strong><br>
+      Semana da Tecnologia &bull; Curso de Tecnologia em Sistemas para Internet (TSI)<br>
+      Av. Pedro Cavalo, 709 - Portal da Pérola II, Birigui - SP
+    </div>
+  </footer>
+
+  <script src="https://openfpcdn.io/fingerprintjs/v4" type="module"></script>
+  <script src="/collect.js" type="module"></script>
+</body>
+</html>
