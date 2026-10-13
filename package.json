@@ -1,0 +1,20 @@
+{
+  "name": "ifsp-palestra-cybersec",
+  "version": "1.0.0",
+  "description": "Demo educacional de conscientizacao em seguranca - Semana da Tecnologia IFSP Birigui",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
+  }
+}
