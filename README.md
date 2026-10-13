@@ -1,12 +1,16 @@
 # IFSP - Palestra CyberSec
 
-Site de demonstração educacional de conscientização em segurança da informação.
-Semana da Tecnologia - IFSP Birigui (curso TSI), sob orientação do Prof. Rogério Pinto.
+Fala, dev!
 
-Se apresenta como um "sorteio" para mostrar, de forma ética e autorizada, quanta informação um site qualquer coleta quando a pessoa apenas abre o link e interage.
-Os dados são exibidos no painel ao final da palestra e apagados ao vivo na frente da plateia.
+Esse é um site de demonstração educacional de conscientização em segurança da informação. Vou palestrar na faculdade sobre o tema.
 
-Veja `PLANEJAMENTO.md` para o escopo completo, decisões e cuidados éticos.
+De inicio, o site se apresenta como um "sorteio", onde o usuário insere seus dados para participar. Depois, ao final da palestra, mostramos, de forma ética e autorizada, quanta informação um site qualquer coleta quando a pessoa apenas abre o link e interage.
+Os dados são exibidos no painel ao final da palestra e apagados ao vivo na frente da plateia. Por questões éticas e legais, não estamos acessando câmera, microfone ou outras informações sensíveis NESSE site, já que ele sera aberto ao público.
+Porém, para demonstração para o público, temos outro site interno que tem controle da câmera e microfone do usuário (basta ele aceitar), mas que é utilizado apenas pelos organizadores da palestra.
+
+Como a palestra ainda não aconteceu e tudo isso ainda está em desenvolvimento, isso ainda está desatualizado no meu GitHub. Vou subir assim que a palestra for realizada. tmj nação
+
+E como eu disse, fica em paz pq tudo isso tem autorização legal e aprovação do IFSP, além da tutela do Professor Rogério Pinto.
 
 ## Requisitos
 
@@ -42,24 +46,9 @@ npm start
 
 Se as credenciais do Google ficarem em branco, o botão "Continuar com Google" não aparece - o resto funciona normalmente.
 
-## Configurar o Login com Google (opcional, mas recomendado)
-
-1. https://console.cloud.google.com -> crie um projeto.
-2. "APIs e Serviços" -> "Tela de permissão OAuth" (OAuth consent screen):
-   - Tipo: Externo.
-   - Preencha nome do app, e-mail de suporte, e-mail do desenvolvedor.
-   - Escopos: apenas `openid`, `email`, `profile` (não-sensíveis).
-   - **Publique como "Em produção"** (In production). Com escopos básicos não há revisão de segurança, e isso remove o aviso "app não verificado".
-3. "Credenciais" -> "Criar credenciais" -> "ID do cliente OAuth" -> "Aplicativo da Web":
-   - Authorized redirect URI: `${BASE_URL}/auth/google/callback`
-     (local: `http://localhost:3000/auth/google/callback`; produção: `https://seu-dominio/auth/google/callback`).
-4. Copie o Client ID e Client Secret para o `.env`.
-
-> O Google exige HTTPS em produção. Em `localhost` o HTTP é aceito para teste.
-
 ## Deploy (produção)
 
-- Qualquer host Node com HTTPS (Render, Railway, Fly.io).
+- Qualquer host Node com HTTPS.
 - Defina `BASE_URL` com o domínio https público e atualize o redirect URI no Google.
 - Um domínio com cara de sorteio ajuda a demonstração.
 
@@ -75,5 +64,4 @@ Se as credenciais do Google ficarem em branco, o botão "Continuar com Google" n
 - Escopo fechado: só a plateia do evento.
 - Consentimento real no termo (letra miúda, mas verdadeiro).
 - Sem câmera/microfone.
-- Senha guardada só para a demonstração de reúso, exibida mascarada, apagada ao fim.
 - Wipe manual ao vivo encerra a coleta.
