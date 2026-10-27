@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    image: ifsp-palestra-cybersec
+    restart: unless-stopped
+    env_file: .env
+    # Publica so no loopback: quem acessa de fora e o nginx do host, nunca a internet direto.
+    # Host 3002 -> container 3000.
+    ports:
+      - "127.0.0.1:3002:3000"
+    volumes:
+      # Persiste o SQLite entre recriacoes do container (DB_PATH=/app/data/data.db).
+      - sorteio-data:/app/data
+
+volumes:
+  sorteio-data:
