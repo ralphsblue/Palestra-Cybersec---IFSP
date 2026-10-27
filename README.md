@@ -42,14 +42,11 @@ npm start
 | `BASE_URL` | URL pública. Local: `http://localhost:3000`. Produção: `https://seu-dominio` |
 | `SESSION_SECRET` | String aleatória longa para a sessão |
 | `ADMIN_USER` / `ADMIN_PASS` | Credenciais do painel `/admin` |
-| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | OAuth do Google (opcional) |
-
-Se as credenciais do Google ficarem em branco, o botão "Continuar com Google" não aparece - o resto funciona normalmente.
 
 ## Deploy (produção)
 
 - Qualquer host Node com HTTPS.
-- Defina `BASE_URL` com o domínio https público e atualize o redirect URI no Google.
+- Defina `BASE_URL` com o domínio https público.
 - Um domínio com cara de sorteio ajuda a demonstração.
 
 ## Fluxo da demo

@@ -106,12 +106,39 @@ document.getElementById('fecharTermo').addEventListener('click', () => {
   dialog.close();
 });
 
-fetch('/config').then(r => r.json()).then(cfg => {
-  if (cfg.googleEnabled) {
-    document.getElementById('googleBtn').style.display = 'flex';
-    document.getElementById('sepEl').style.display = 'flex';
+// Dropdowns Estado -> Cidade (dados IBGE locais)
+const estadoSel = document.getElementById('estado');
+const cidadeSel = document.getElementById('cidade');
+
+fetch('/ibge.json').then(r => r.json()).then(ibge => {
+  for (const uf of ibge.estados) {
+    const opt = document.createElement('option');
+    opt.value = uf.sigla;
+    opt.textContent = uf.nome;
+    estadoSel.appendChild(opt);
   }
-}).catch(() => {});
+
+  estadoSel.addEventListener('change', () => {
+    const uf = estadoSel.value;
+    const cidades = ibge.municipios[uf] || [];
+    cidadeSel.innerHTML = '<option value="" disabled selected>Selecione a cidade</option>';
+    for (const nome of cidades) {
+      const opt = document.createElement('option');
+      opt.value = nome + ' - ' + uf;
+      opt.textContent = nome;
+      cidadeSel.appendChild(opt);
+    }
+    cidadeSel.disabled = false;
+  });
+}).catch(() => {
+  // Sem dados do IBGE: cai para texto livre para nao travar o cadastro.
+  const wrapEstado = estadoSel.closest('.field');
+  if (wrapEstado) wrapEstado.style.display = 'none';
+  const wrap = cidadeSel.parentElement;
+  const input = document.createElement('input');
+  input.type = 'text'; input.id = 'cidade'; input.name = 'cidade'; input.placeholder = 'Cidade';
+  wrap.replaceWith(input);
+});
 
 let devicePromise = coletarDevice();
 
@@ -151,24 +178,3 @@ form.addEventListener('submit', async (e) => {
     msg.textContent = 'Erro ao enviar. Tente novamente.';
   }
 });
-
-const googleBtnEl = document.getElementById('googleBtn');
-if (googleBtnEl) {
-  googleBtnEl.addEventListener('click', async (e) => {
-    e.preventDefault();
-    googleBtnEl.style.pointerEvents = 'none';
-    googleBtnEl.style.opacity = '0.6';
-
-    const device = await devicePromise;
-    behavior.tempoNaPaginaMs = Date.now() - inicio;
-    document.getElementById('deviceField').value = JSON.stringify(device);
-    document.getElementById('behaviorField').value = JSON.stringify(behavior);
-
-    const body = new URLSearchParams(new FormData(form));
-    try {
-      await fetch('/participar', { method: 'POST', body });
-    } catch (err) {}
-
-    window.location.href = '/auth/google';
-  });
-}

@@ -8,11 +8,20 @@
 </head>
 <body>
   <div class="barra-gov">
-    <span class="flag"></span><strong>BRASIL</strong>
-    <span class="gov-links"><span>Simplifique!</span><span>Participe</span><span>Acesso a informacao</span></span>
+    <img class="flag" src="/flag-brazil.svg" alt="Bandeira do Brasil"><strong>BRASIL</strong>
+    <button class="gov-toggle" id="govToggle" aria-label="Abrir menu do governo" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="gov-links" id="govLinks">
+      <span>Simplifique!</span><span>Comunica BR</span><span>Participe</span><span>Acesso &agrave; informa&ccedil;&atilde;o</span><span>Legisla&ccedil;&atilde;o</span><span>Canais</span>
+    </nav>
   </div>
 
   <header class="header">
+    <div class="acess-bar">
+      <a href="#">ACESSIBILIDADE</a>
+      <a href="#">ALTO CONTRASTE</a>
+    </div>
     <div class="header-inner">
       <img src="/ifsp-logo.png" alt="Instituto Federal de Sao Paulo - Campus Birigui" class="logo-img">
     </div>
@@ -44,5 +53,17 @@
       Semana da Tecnologia &bull; Curso de Tecnologia em Sistemas para Internet (TSI)
     </div>
   </footer>
+
+  <script>
+    (function () {
+      var t = document.getElementById('govToggle');
+      var bar = document.querySelector('.barra-gov');
+      if (!t || !bar) return;
+      t.addEventListener('click', function () {
+        var open = bar.classList.toggle('open');
+        t.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    })();
+  </script>
 </body>
 </html>
